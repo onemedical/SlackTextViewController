@@ -524,6 +524,18 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 - (void)acceptAutoCompletionWithString:(NSString *_Nullable)string keepPrefix:(BOOL)keepPrefix;
 
 
+#pragma mark - Content View
+///------------------------------------------------
+/// @name Content View
+///------------------------------------------------
+
+/** Optional view above the text view. Non-visible by default. */
+@property (nonatomic, readonly, strong) UIView *contentView;
+
+/** The content view's height. Default is 0 pts. */
+@property (nonatomic, assign) CGFloat contentViewHeight;
+
+
 #pragma mark - Text Caching
 ///------------------------------------------------
 /// @name Text Caching
