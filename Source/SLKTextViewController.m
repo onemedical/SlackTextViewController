@@ -242,6 +242,12 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     [super viewDidLayoutSubviews];
 }
 
+- (void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    
+    [self slk_updateViewConstraints];
+}
 
 #pragma mark - Getters
 
@@ -431,7 +437,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 - (CGFloat)slk_appropriateBottomMargin
 {
-    // A bottom margin is required only if the view is extended out of it bounds
+    // A bottom margin is required if the view is extended out of it bounds
     if ((self.edgesForExtendedLayout & UIRectEdgeBottom) > 0) {
         
         UITabBar *tabBar = self.tabBarController.tabBar;
@@ -440,6 +446,11 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         if (tabBar && !tabBar.hidden && !self.hidesBottomBarWhenPushed) {
             return CGRectGetHeight(tabBar.frame);
         }
+    }
+    
+    // A bottom margin is required for iPhone X
+    if (@available(iOS 11.0, *)) {
+        return self.view.safeAreaInsets.bottom;
     }
     
     return 0.0;
@@ -2254,7 +2265,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
                             @"autoCompletionView": self.autoCompletionView,
                             @"typingIndicatorView": self.typingIndicatorProxyView,
                             @"contentView": self.contentView,
-                            @"textInputbar": self.textInputbar,
+                            @"textInputbar": self.textInputbar
                             };
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollView(0@750)][typingIndicatorView(0)][contentView(0)]-0@999-[textInputbar(0)]|" options:0 metrics:nil views:views]];
